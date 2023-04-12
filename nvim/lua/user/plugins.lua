@@ -202,6 +202,12 @@ use({
 })
 
 use({
+  'tpope/vim-fugitive',
+  requires = 'tpope/vim-rhubarb',
+  cmd = 'G',
+})
+
+use({
   'nvim-telescope/telescope.nvim',
   requires = {
     { 'nvim-lua/plenary.nvim' },

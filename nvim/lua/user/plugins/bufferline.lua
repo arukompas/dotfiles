@@ -14,7 +14,7 @@ require('bufferline').setup({
         text_align = 'left',
       },
     },
-    separator_style = 'slant',
+    -- separator_style = 'slant',
     modified_icon = '',
     custom_areas = {
       left = function()

@@ -280,7 +280,10 @@ use({
 })
 
 use({
-  'github/copilot.vim'
+  'github/copilot.vim',
+  config = function()
+    vim.keymap.set('i', '<C-J>', [[copilot#Accept("\<CR>")]], { expr = true })
+  end,
 })
 
 -- Automatically set up your configuration after cloning packer.nvim

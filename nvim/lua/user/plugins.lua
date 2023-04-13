@@ -255,6 +255,16 @@ use({
   end,
 })
 
+-- PHP Refactoring tools
+use({
+  'phpactor/phpactor',
+  ft = 'php',
+  run = 'composer install --no-dev --optimize-autoloader',
+  config = function()
+    vim.keymap.set('n', '<Leader>pm', ':PhpactorContextMenu<CR>')
+  end,
+})
+
 -- Completion
 use({
   'hrsh7th/nvim-cmp',

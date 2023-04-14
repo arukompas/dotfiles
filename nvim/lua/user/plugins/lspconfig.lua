@@ -28,6 +28,18 @@ require('lspconfig').jsonls.setup({
   },
 })
 
+-- Lua
+require('lspconfig').lua_ls.setup({
+  capabilities = capabilities,
+  settings = {
+    Lua = {
+      diagnostics = {
+        globals = { 'vim' },
+      }
+    }
+  }
+})
+
 -- null-ls
 require('null-ls').setup({
   sources = {
@@ -45,9 +57,9 @@ require('null-ls').setup({
     }),
     require('null-ls').builtins.diagnostics.proselint,
     require('null-ls').builtins.diagnostics.gitlint,
-    -- require('null-ls').builtins.diagnostics.luacheck.with({
-    --   extra_args = { '--config', vim.fn.stdpath('config') .. '/.luacheckrc' },
-    -- }),
+    require('null-ls').builtins.diagnostics.luacheck.with({
+      extra_args = { '--config', vim.fn.stdpath('config') .. '/.luacheckrc' },
+    }),
     require("null-ls").builtins.diagnostics.phpstan,
     -- require('null-ls').builtins.diagnostics.solhint,
     require('null-ls').builtins.diagnostics.trail_space.with({ disabled_filetypes = { 'NvimTree' } }),
@@ -59,8 +71,8 @@ require('null-ls').setup({
     require('null-ls').builtins.formatting.prettierd,
     require('null-ls').builtins.formatting.phpcsfixer,
     require('null-ls').builtins.formatting.jq,
-    -- require('null-ls').builtins.formatting.rustywind,
-    -- require('null-ls').builtins.formatting.stylua,
+    require('null-ls').builtins.formatting.rustywind,
+    require('null-ls').builtins.formatting.stylua,
   },
 })
 

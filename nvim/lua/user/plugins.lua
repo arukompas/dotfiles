@@ -282,7 +282,10 @@ use({
 use({
   'github/copilot.vim',
   config = function()
-    vim.keymap.set('i', '<C-J>', [[copilot#Accept("\<CR>")]], { expr = true })
+    vim.cmd([[
+      imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
+      let g:copilot_no_tab_map = v:true
+    ]])
   end,
 })
 

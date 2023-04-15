@@ -69,7 +69,7 @@ require('null-ls').setup({
       end,
     }),
     require('null-ls').builtins.formatting.prettierd,
-    require('null-ls').builtins.formatting.phpcsfixer,
+    -- require('null-ls').builtins.formatting.phpcsfixer,
     require('null-ls').builtins.formatting.jq,
     require('null-ls').builtins.formatting.rustywind,
     require('null-ls').builtins.formatting.stylua,

@@ -223,6 +223,13 @@ use({
 })
 
 use({
+  "gbprod/php-enhanced-treesitter.nvim",
+  requires = {
+    { "derekstride/tree-sitter-sql", run = ":TSInstall sql" },
+  }
+})
+
+use({
   'tpope/vim-fugitive',
   requires = 'tpope/vim-rhubarb',
   cmd = 'G',

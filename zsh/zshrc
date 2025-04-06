@@ -7,7 +7,7 @@ fi
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH="/Users/arunas/.local/bin:/Users/arunas/.composer/vendor/bin:/Users/arunas/development/flutter/bin:$PATH"
+export PATH="/Users/arunas/.local/bin:/Users/arunas/.composer/vendor/bin:$PATH"
 
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/arunas/.oh-my-zsh"
@@ -16,6 +16,7 @@ export TERM="xterm-256color"
 [[ -n $TMUX ]] && export TERM="screen-256color"
 
 export COMPOSER_MEMORY_LIMIT=4G
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -134,6 +135,7 @@ alias brw="composer install && php artisan migrate && yarn install && yarn watch
 alias brh="composer install && php artisan migrate && yarn install && yarn hot"
 alias gs="git status"
 alias gb="git branch"
+alias gbm="git branch --merged main | grep -v '^[ *]*main$'"
 alias gmaster="git checkout master && git pull origin master"
 alias tinker="php artisan tinker"
 alias art="php artisan"
@@ -145,6 +147,7 @@ alias json='python -m json.tool < '
 alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
 alias spostgres="brew services stop mysql@5.7 && brew services start postgresql@14"
 alias smysql="brew services stop postgresql@14 && brew services start mysql@5.7"
+alias spin='[ -f node_modules/.bin/spin ] && bash node_modules/.bin/spin || bash vendor/bin/spin'
 
 
 function gpull () {
@@ -155,12 +158,28 @@ function gpull () {
       git pull origin $1
   fi
 }
+function greb () {
+  if [ -z "$1" ]
+    then
+      git pull --rebase origin `git rev-parse --abbrev-ref HEAD`
+    else
+      git pull --rebase origin $1
+  fi
+}
 function gpush () {
   if [ -z "$1" ]
     then
       git push origin `git rev-parse --abbrev-ref HEAD`
     else
       git push origin $1
+  fi
+}
+function gpushf () {
+  if [ -z "$1" ]
+    then
+      git push origin `git rev-parse --abbrev-ref HEAD` --force
+    else
+      git push origin $1 --force
   fi
 }
 function ch() { git checkout $1; gpull; }
@@ -170,8 +189,15 @@ alias mrs="php artisan migrate:refresh --seed"
 alias mf="php artisan migrate:fresh"
 alias vapor="vendor/bin/vapor"
 alias vim=nvim
+alias tt="php artisan typescript:transform"
+alias gself='f() { git log --since="$1 days ago" --author="$(git config user.name)" --pretty=format:"%C(yellow)%h%C(reset) %C(dim white)%ad%C(reset) %C(green)%d%C(reset) %s" --date=local; }; f'
 
 source ~/.zshrcprivate
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion"
+

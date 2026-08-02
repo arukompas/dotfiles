@@ -1,0 +1,32 @@
+[projects."github.com/arukompas/agenthub"]
+approved-commands = [
+    '[ -n "$TMUX" ] && tmux rename-window "{{ branch[:25] }}"',
+    "wt step copy-ignored",
+    "valet link $(basename {{ worktree_path }}) && valet secure $(basename {{ worktree_path }})",
+    "composer install",
+    "npm install && npm run build",
+    """sed -i '' "s|^APP_URL=.*|APP_URL=https://$(basename {{ worktree_path }}).test|" .env""",
+    "valet unlink $(basename {{ worktree_path }}) || true",
+    """sed -i '' "s|^APP_NAME=.*|APP_NAME=AgentHub_($(basename {{ worktree_path }})|" .env""",
+    """sed -i '' "s|^APP_NAME=.*|APP_NAME=AgentHub_$(basename {{ worktree_path }})|" .env""",
+]
+
+[projects."github.com/arukompas/buhalterija"]
+approved-commands = [
+    "wt step copy-ignored",
+    "valet unlink",
+    "valet link && valet secure",
+    "sed -i '' 's|^APP_URL=.*|APP_URL=https://{{ worktree_name }}.test|' {{ worktree_path }}/.env",
+    "./bin/dev-down",
+    "sed -i '' 's|^APP_URL=.*|APP_URL=https://app.{{ worktree_name | lower }}.test|' {{ worktree_path }}/.env",
+    "valet link app.{{ worktree_name | lower }} && valet secure app.{{ worktree_name | lower }}",
+    "valet unlink app.{{ worktree_name | lower }}",
+    "sed -i '' 's|^PUBLIC_SITE_URL=.*|PUBLIC_SITE_URL=https://www.{{ worktree_name | lower }}.test|' {{ worktree_path }}/.env",
+    "sed -i '' 's|^APP_SITE_URL=.*|APP_SITE_URL=https://app.{{ worktree_name | lower }}.test|' {{ worktree_path }}/.env",
+    "npm run marketing:build",
+    "cd {{ worktree_path }}/sites/marketing/dist && valet link www.{{ worktree_name | lower }} && valet secure www.{{ worktree_name | lower }}",
+    "valet unlink www.{{ worktree_name | lower }}",
+    "sed -i '' 's|^PUBLIC_SITE_URL=.*|PUBLIC_SITE_URL=https://{{ worktree_name | lower }}.test|' {{ worktree_path }}/.env",
+    "cd {{ worktree_path }}/sites/marketing/dist && valet link {{ worktree_name | lower }} && valet secure {{ worktree_name | lower }}",
+    "valet unlink {{ worktree_name | lower }}",
+]

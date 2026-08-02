@@ -23,3 +23,10 @@ ln -s $DOTFILES/nvim $HOME/.config/nvim
 
 rm -rf $HOME/.config/phpactor
 ln -s $DOTFILES/phpactor $HOME/.config/phpactor
+
+rm -rf $HOME/.config/worktrunk
+ln -s $DOTFILES/worktrunk $HOME/.config/worktrunk
+
+mkdir -p $HOME/.config/herdr
+rm -rf $HOME/.config/herdr/config.toml
+ln -s $DOTFILES/herdr/config.toml $HOME/.config/herdr/config.toml

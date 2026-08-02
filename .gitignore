@@ -1,2 +1,5 @@
 .DS_Store
 **/.DS_Store
+
+# worktrunk writes lock files next to its configs
+worktrunk/*.lock

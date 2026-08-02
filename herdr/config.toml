@@ -1,0 +1,62 @@
+# herdr configuration — mirrors ~/.tmux.conf where herdr has an equivalent.
+
+[terminal]
+# tmux: split-window/new-window -c "#{pane_current_path}"
+new_cwd = "follow"
+
+[keys]
+# tmux: set -g prefix C-Space
+prefix = "ctrl+space"
+
+# tmux: bind r source-file ~/.tmux.conf
+# (herdr's default prefix+r is resize_mode, moved aside to free up 'r')
+reload_config = "prefix+r"
+resize_mode = "prefix+shift+r"
+
+# tmux: bind d detach (tmux default)
+detach = "prefix+d"
+
+# tmux: bind -r n/p next/previous-window, bind C-n/C-p, bind -r C-h/C-l select-window -t :-/:+
+next_tab = ["prefix+n", "prefix+ctrl+n", "prefix+ctrl+l"]
+previous_tab = ["prefix+p", "prefix+ctrl+p", "prefix+ctrl+h"]
+
+# tmux: bind c new-window
+new_tab = "prefix+c"
+
+# tmux: bind -r h/j/k/l select-pane -L/-D/-U/-R
+focus_pane_left = "prefix+h"
+focus_pane_down = "prefix+j"
+focus_pane_up = "prefix+k"
+focus_pane_right = "prefix+l"
+
+# tmux: bind | split-window -h  /  bind - split-window -v
+split_vertical = "prefix+|"
+split_horizontal = "prefix+minus"
+
+# tmux defaults kept as-is: prefix+z zoom, prefix+x kill-pane, prefix+[ copy-mode
+zoom = "prefix+z"
+close_pane = "prefix+x"
+copy_mode = "prefix+["
+
+# Navigate-mode movement (prefix+g), vi keys to match `setw -g mode-keys vi`
+navigate_pane_left = "h"
+navigate_pane_down = "j"
+navigate_pane_up = "k"
+navigate_pane_right = "l"
+
+[ui]
+# tmux: set -g mouse on
+mouse_capture = true
+
+# tmux: bind c creates a window immediately, no name prompt
+prompt_new_tab_name = false
+
+[theme]
+name = "catppuccin"
+
+[theme.custom]
+# tmux: set-option -g status-style "fg=#7C7D83 bg=#242631"
+panel_bg = "#242631"
+
+[session]
+resume_agents_on_restore = true

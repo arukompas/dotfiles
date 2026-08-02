@@ -6,8 +6,9 @@ set noswapfile
 set hlsearch
 set ignorecase
 set incsearch
-set spell spelllang=en_gb
+set nospell
 set cursorline
 nnoremap <leader>f 1z=
 nnoremap <leader>s :set spell!
 vnoremap . :norm.<CR>
+highlight SpellBad cterm=underline ctermfg=red ctermbg=NONE

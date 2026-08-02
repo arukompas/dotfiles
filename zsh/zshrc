@@ -7,7 +7,8 @@ fi
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH="/Users/arunas/.local/bin:/Users/arunas/.composer/vendor/bin:$PATH"
+export PATH="$PATH:/opt/homebrew/bin"
+export PATH="$HOME/.local/bin:$HOME/.composer/vendor/bin:$PATH"
 
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/arunas/.oh-my-zsh"
@@ -17,6 +18,7 @@ export TERM="xterm-256color"
 
 export COMPOSER_MEMORY_LIMIT=4G
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
+export SNAP_HAPPY_SCREENSHOT_PATH="/Users/arunas/Screenshots"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -112,11 +114,11 @@ TIMEFMT='%J   %U  user %S system %P cpu %*E total'$'\n'\
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='nvim'
+fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -133,13 +135,14 @@ TIMEFMT='%J   %U  user %S system %P cpu %*E total'$'\n'\
 alias br="composer install && php artisan migrate && yarn install && yarn dev"
 alias brw="composer install && php artisan migrate && yarn install && yarn watch"
 alias brh="composer install && php artisan migrate && yarn install && yarn hot"
-alias gs="git status"
 alias gb="git branch"
+alias gs="git status"
 alias gbm="git branch --merged main | grep -v '^[ *]*main$'"
 alias gmaster="git checkout master && git pull origin master"
+alias gitcommiturl="gh browse \$(git rev-parse HEAD) --no-browser"
 alias tinker="php artisan tinker"
 alias art="php artisan"
-alias work="php artisan queue:work --queue=priority,default,sync-queue,export-processing-queue,long-scheduled-jobs --tries=2 --timeout=90"
+alias work="php artisan queue:work --queue=priority,default,sync-queue,export-processing-queue,long-scheduled-jobs,ledger --tries=2 --timeout=90"
 alias killdns="sudo killall -HUP mDNSResponder"
 alias localip='ifconfig | sed -n "s/^.*inet \(192.[0-9]*.[0-9]*.[0-9]*\).*$/\1/p"'
 alias serve='php artisan serve --host=`localip`'
@@ -183,14 +186,23 @@ function gpushf () {
   fi
 }
 function ch() { git checkout $1; gpull; }
+function gac() { git add . && git commit -m "$*" }
+alias greset="git checkout -- . && git clean -fd"
 
 alias mfs="php artisan migrate:fresh --seed"
 alias mrs="php artisan migrate:refresh --seed"
 alias mf="php artisan migrate:fresh"
 alias vapor="vendor/bin/vapor"
-alias vim=nvim
-alias tt="php artisan typescript:transform"
+alias tt="art test --parallel && npm test"
 alias gself='f() { git log --since="$1 days ago" --author="$(git config user.name)" --pretty=format:"%C(yellow)%h%C(reset) %C(dim white)%ad%C(reset) %C(green)%d%C(reset) %s" --date=local; }; f'
+alias cdr="cd \"\$(git rev-parse --show-toplevel)\""
+alias n="nvim ."
+alias vim="nvim"
+alias lg="lazygit"
+alias nconf="nvim ~/.config/nvim"
+alias re-source="source ~/.zshrc"
+alias gu="git pull origin main && git fetch"
+alias squash="wt step squash"
 
 source ~/.zshrcprivate
 
@@ -201,3 +213,74 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
 [ -s "/opt/homebrew/opt/nvm/etc/bash_completion" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion"
 
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/arunas/.lmstudio/bin"
+
+alias sleep-disable="sudo pmset -b disablesleep 1"
+alias sleep-enable="sudo pmset -b disablesleep 0"
+alias sleep-status="pmset -g | grep -q 'SleepDisabled.*1' && echo \"sleep disabled\" || echo \"sleep enabled\""
+alias clearwork="php artisan queue:clear && php artisan queue:flush && work"
+alias inspire="pi --provider anthropic --model claude-sonnet-4-6:low -p \"\$(date +%s): Give a random inspirational quote\""
+alias update="claude update && npm install -g @mariozechner/pi-coding-agent backlog.md && inspire"
+alias c="codex"
+alias cc="claude"
+alias b="npm run build && npm run marketing:build"
+alias bo="npm install && npm run build && npm run marketing:build && valet open"
+alias ssh-buhalterija="ssh ploi@49.13.112.18"
+
+impl() {
+  if [ "$#" -ne 1 ]; then
+    printf 'usage: impl <arg>\n' >&2
+    return 2
+  fi
+
+  local arg="$1"
+  local rc
+
+  if wt switch -c "$arg"; then
+    :
+  else
+    rc=$?
+
+    if git show-ref --verify --quiet "refs/heads/$arg"; then
+      wt switch "$arg" || return
+    else
+      return "$rc"
+    fi
+  fi
+
+  composer install
+  npm install
+  codex "\$wf-implement-review-loop $arg"
+}
+
+alias db='open -a TablePlus "$(git rev-parse --show-toplevel)/database/database.sqlite"'
+
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	command yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
+	command rm -f -- "$tmp"
+}
+
+export PHPDOC_PLANTUML_BIN=/opt/homebrew/bin/plantuml
+
+# bun completions
+[ -s "/Users/arunas/.bun/_bun" ] && source "/Users/arunas/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# opencode
+export PATH=/Users/arunas/.opencode/bin:$PATH
+eval "$(try init ~/Projects/experiments)"
+
+export BEADS_DIR=~/.beads/agenthub
+
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
+export PATH="$(brew --prefix libpq)/bin:$PATH"
+fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
+autoload -Uz compinit && compinit

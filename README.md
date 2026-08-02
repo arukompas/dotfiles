@@ -24,7 +24,7 @@ cd ~/Projects/dotfiles
 ./install
 ```
 
-The script replaces existing files at each target, so back anything up first. It links:
+If a target already exists as a real file or directory, it is moved aside to `<target>.bak` (`.bak.1`, `.bak.2`, … if that name is taken) rather than deleted, so a machine's own configs survive. Existing symlinks are replaced. Re-running the script is safe. It links:
 
 - `zsh/zshrc` → `~/.zshrc`
 - `zsh/zshrcprivate` → `~/.zshrcprivate`

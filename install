@@ -1,32 +1,38 @@
 #!/usr/bin/env bash
 
-DOTFILES=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
+set -euo pipefail
 
-rm -rf $HOME/.zshrc
-ln -s $DOTFILES/zsh/zshrc $HOME/.zshrc
+DOTFILES=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
-rm -rf $HOME/.zshrcprivate
-ln -s $DOTFILES/zsh/zshrcprivate $HOME/.zshrcprivate
+# Symlink $1 to $2, moving any pre-existing real file or directory aside first.
+# An existing symlink is just replaced -- removing it never touches its target.
+link() {
+    local src=$1 dest=$2 backup n
 
-rm -rf $HOME/.vim
-ln -s $DOTFILES/vim $HOME/.vim
+    mkdir -p "$(dirname "$dest")"
 
-rm -rf $HOME/.tmux.conf
-ln -s $DOTFILES/tmux/tmux.conf $HOME/.tmux.conf
+    if [ -L "$dest" ]; then
+        rm -f "$dest"
+    elif [ -e "$dest" ]; then
+        backup="$dest.bak"
+        n=1
+        while [ -e "$backup" ]; do
+            backup="$dest.bak.$n"
+            n=$((n + 1))
+        done
+        mv "$dest" "$backup"
+        echo "backed up $dest -> $backup"
+    fi
 
-mkdir -p $HOME/.local/bin
-rm -rf $HOME/.local/bin/t
-ln -s $DOTFILES/scripts/t $HOME/.local/bin/t
+    ln -s "$src" "$dest"
+}
 
-rm -rf $HOME/.config/nvim
-ln -s $DOTFILES/nvim $HOME/.config/nvim
-
-rm -rf $HOME/.config/phpactor
-ln -s $DOTFILES/phpactor $HOME/.config/phpactor
-
-rm -rf $HOME/.config/worktrunk
-ln -s $DOTFILES/worktrunk $HOME/.config/worktrunk
-
-mkdir -p $HOME/.config/herdr
-rm -rf $HOME/.config/herdr/config.toml
-ln -s $DOTFILES/herdr/config.toml $HOME/.config/herdr/config.toml
+link "$DOTFILES/zsh/zshrc" "$HOME/.zshrc"
+link "$DOTFILES/zsh/zshrcprivate" "$HOME/.zshrcprivate"
+link "$DOTFILES/vim" "$HOME/.vim"
+link "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
+link "$DOTFILES/scripts/t" "$HOME/.local/bin/t"
+link "$DOTFILES/nvim" "$HOME/.config/nvim"
+link "$DOTFILES/phpactor" "$HOME/.config/phpactor"
+link "$DOTFILES/worktrunk" "$HOME/.config/worktrunk"
+link "$DOTFILES/herdr/config.toml" "$HOME/.config/herdr/config.toml"

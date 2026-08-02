@@ -276,7 +276,6 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 # opencode
 export PATH=/Users/arunas/.opencode/bin:$PATH
-eval "$(try init ~/Projects/experiments)"
 
 export BEADS_DIR=~/.beads/agenthub
 

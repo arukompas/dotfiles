@@ -115,14 +115,6 @@ brew install php composer
 composer global require laravel/valet && valet install
 ```
 
-`zshrc` also runs `eval "$(try init ~/Projects/experiments)"` unconditionally, so [`try`](https://github.com/tobi/try) is required — without it every new shell prints an error:
-
-```sh
-gem install try-cli
-```
-
-The `wt` hook next to it is guarded by `command -v` and degrades quietly.
-
 ### Optional
 
 Only needed by specific aliases and functions — skip any you do not use:

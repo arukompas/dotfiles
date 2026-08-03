@@ -51,6 +51,7 @@ mouse_capture = true
 # tmux: bind c creates a window immediately, no name prompt
 prompt_new_tab_name = false
 
+agent_panel_sort = "spaces"
 [theme]
 name = "catppuccin"
 

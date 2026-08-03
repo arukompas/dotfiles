@@ -29,4 +29,5 @@ approved-commands = [
     "sed -i '' 's|^PUBLIC_SITE_URL=.*|PUBLIC_SITE_URL=https://{{ worktree_name | lower }}.test|' {{ worktree_path }}/.env",
     "cd {{ worktree_path }}/sites/marketing/dist && valet link {{ worktree_name | lower }} && valet secure {{ worktree_name | lower }}",
     "valet unlink {{ worktree_name | lower }}",
+    "cp {{ repo_path }}/.env {{ worktree_path }}/.env",
 ]

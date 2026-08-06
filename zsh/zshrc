@@ -151,7 +151,7 @@ alias spostgres="brew services stop mysql@5.7 && brew services start postgresql@
 alias smysql="brew services stop postgresql@14 && brew services start mysql@5.7"
 alias spin='[ -f node_modules/.bin/spin ] && bash node_modules/.bin/spin || bash vendor/bin/spin'
 
-
+alias rb="git rebase main"
 function gpull () {
   if [ -z "$1" ]
     then

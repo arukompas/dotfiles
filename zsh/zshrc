@@ -225,8 +225,11 @@ alias inspire="pi --provider anthropic --model claude-sonnet-4-6:low -p \"\$(dat
 alias update="claude update && npm install -g @mariozechner/pi-coding-agent backlog.md && inspire"
 alias c="codex"
 alias cc="claude"
+alias i="composer install && npm install"
 alias b="npm run build && npm run marketing:build"
 alias bo="npm install && npm run build && npm run marketing:build && valet open"
+alias ib="i && b"
+alias ibo="i && bo"
 alias ssh-buhalterija="ssh ploi@49.13.112.18"
 
 impl() {
